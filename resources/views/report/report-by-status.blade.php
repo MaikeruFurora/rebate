@@ -40,6 +40,7 @@
             <tr>
                 <th width="3%">#</th>
                 <th width="7%">CREATED AT</th>
+                <th width="8%">APPROVED AT</th>
                 <th width="30%">NAME</th>
                 <th width="10%">REFERENCE</th>
                 <th width="5%">VOUCHER</th>
@@ -50,22 +51,23 @@
             </tr>
         </thead>
         <tbody>
-         @forelse ($data as $key => $item)
+         @forelse ($data as $key => $value)
          <tr>
              <td>{{ ++$key }}</td>
-             <td>{{ date("m-d-Y",strtotime($item->created_at)) }}</td>
-             <td>{{ $item->clientname ?? 'N/A' }}</td>
-             <td>{{ strtoupper($item->reference) }}</td>
-             <th>{{ $item->seriescode ?? '-------' }}</th>
-             <td>{{ $item->catname }}</td>
-             <td>{{ $item->rebateAmount }}</td>
-             <td>{{ number_format($item->rebateUsed,4) }}</td>
-             <td>{{ number_format($item->rebateBalance,4) }}</td>
+             <td>{{ date("m-d-Y",strtotime($value->created_at)) }}</td>
+             <td>{{ (!is_null($value->approved_at)) ? date("m-d-Y",strtotime($value->approved_at)) : '' }}</td>
+             <td>{{ $value->clientname ?? 'N/A' }}</td>
+             <td>{{ strtoupper($value->reference) }}</td>
+             <th>{{ $value->seriescode ?? '-------' }}</th>
+             <td>{{ $value->catname }}</td>
+             <td>{{ $value->rebateAmount }}</td>
+             <td>{{ number_format($value->rebateUsed,4) }}</td>
+             <td>{{ number_format($value->rebateBalance,4) }}</td>
          </tr>
      @php 
-        $total  +=$item->rebateAmount;
-        $totalRU+=$item->rebateUsed;
-        $totalRB+=$item->rebateBalance;
+        $total  +=$value->rebateAmount;
+        $totalRU+=$value->rebateUsed;
+        $totalRB+=$value->rebateBalance;
      @endphp
      @empty
          <tr>

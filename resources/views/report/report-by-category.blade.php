@@ -34,6 +34,7 @@
                     <tr>
                         <th width="3%">#</th>
                         <th width="7%">CREATED AT</th>
+                        <th width="8%">APPROVED AT</th>
                         <th width="30%">NAME</th>
                         <th width="10%">REFERENCE</th>
                         <th width="10%">STATUS</th>
@@ -52,6 +53,7 @@
                         <tr>
                             <td>{{ ++$key }}</td>
                             <td>{{ date("m-d-Y",strtotime($item->created_at)) }}</td>
+                            <td>{{ (!is_null($item->approved_at)) ? date("m-d-Y",strtotime($item->approved_at)) ?? '' }}</td>
                             <td>{{ $item->clientname }}</td>
                             <td>{{ strtoupper($item->reference) }}</td>
                             <td>{{ $item->statusname }}</td>
