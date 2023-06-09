@@ -18,6 +18,7 @@
             <thead>
                 <tr>
                     <td style="text-align:center">Reference#</td>
+                    <td style="text-align:center">Rebate Code</td>
                     <td style="text-align:center">Amount</td>
                     <td>Reason</td>
                 </tr>
@@ -26,6 +27,7 @@
                 @foreach($data as $value)
                     <tr>
                         <td style="text-align:center">{{ $value->reference }}</td>
+                        <td style="text-align:center">{{ $value->seriescode }}</td>
                         <td style="text-align:center">{{ $value->rebateAmount }}</td>
                         <td>{{ $value->reason }}</td>
                     </tr>
@@ -38,6 +40,11 @@
             <td>Reference#</td>
             <td>&nbsp;:&nbsp;</td>
             <td>{{ $data[0]->reference ?? '' }}</td>
+        </tr>
+        <tr>
+            <td>Rebate Code</td>
+            <td>&nbsp;:&nbsp;</td>
+            <td>{{ $data[0]->seriescode ?? '' }}</td>
         </tr>
         <tr>
             <td>Amount</td>

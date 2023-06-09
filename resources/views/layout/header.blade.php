@@ -66,7 +66,7 @@
                     <li class="has-submenu">
                         <a href="{{ route('authenticate.approval') }}"><i class="ti-shield"></i> Approval</a>
                     </li>
-                    @if(in_array(auth()->user()->RebateRole,App\Helper\Helper::$rebateRole['menu_bar']) || in_array(auth()->user()->Position_id,['177','185']))
+                    @if(in_array(auth()->user()->RebateRole,App\Helper\Helper::$rebateRole['menu_bar']) || in_array(auth()->user()->Position_id,['177','185','186']))
                     <li class="has-submenu getReport" style="cursor:pointer">
                         <a data-toggle="modal" data-target="#dateRangeModal"><i class="ti-calendar"></i> Report</a>
                     </li>

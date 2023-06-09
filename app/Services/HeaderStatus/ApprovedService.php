@@ -18,44 +18,65 @@ class ApprovedService{
 
         $data =  Header::whereIn('headers.id',$request->header)->groupBy('encodedby','id')->get(['encodedby','id']);
 
-        foreach($data as $value){
-            $temp[$value->encodedby][] = $value;
-        }
+        foreach($data as $value){  $temp[$value->encodedby][] = $value; }
 
         foreach($temp as  $key => $data){
             $output[] = [
-                'username'=> $key,
-                'email'   => User::where('Username',$key)->pluck('Email')[0] ?? "",
-                'id'      => array_column($data,'id'),
+                'username'  => $key,
+                'email'     => User::where('Username',$key)->pluck('Email')[0] ?? "",
+                'id'        => array_column($data,'id'),
             ];
         }
 
-        //return $output;
+        // return $output;
 
         return $this->sendEmailByBatch($output);
 
     }
     
 
-    private function sendEmailByBatch($data){
-
-        $arEmail = User::emailAR()->pluck('Email');
+    public function sendEmailByBatch($data){
 
         foreach($data as $value){
+
+            $emails  = $this->ccEmails($value['username']);
 
             $this->updateSeriesCode($value['id']);
 
             $dataEmbeded = Header::whereIn('id',$value['id'])->get();
 
+            
             Mail::to($value['email'])
 
-            ->cc($arEmail)
-            
-            ->send(new ApprovedMail($dataEmbeded));
+                ->cc($emails)
+                
+                ->send(new ApprovedMail($dataEmbeded));
 
-            // Helper::notifyARBilling($dataEmbeded,'A');
         }
         
+    }
+
+
+    public function ccEmails($username){
+
+        $arEmail = (User::emailAR()->pluck('Email'));
+        
+        $exists  = User::checkIfBilling($username);
+        
+        if (count($exists)>0) {
+            
+             $emails = collect(User::where('Position_id',179)->get())->pluck('Email');
+
+            foreach ($emails as $value) {
+
+                $arEmail[]=$value;
+
+            }
+
+        }
+
+        return $arEmail;
+
     }
 
 

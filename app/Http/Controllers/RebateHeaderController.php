@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Access;
+use App\Helper\Helper;
 use App\Models\Category;
+use App\Models\CreditMemo;
 use App\Models\Header;
-use App\Models\User;
+use FPDM;
 use Illuminate\Http\Request;
 use App\Services\HeaderService;
 use App\Services\HeaderStatus\ApprovedService;
 use App\Services\HeaderStatus\CancelService;
 use App\Services\HeaderStatus\RejectService;
+use App\Services\SearchService;
 use Illuminate\Support\Facades\DB;
 
 class RebateHeaderController extends Controller
@@ -18,12 +20,19 @@ class RebateHeaderController extends Controller
     protected $headerService;
     protected $approveService;
     protected $rejectService;
+    protected $searchService;
 
-    public function __construct(HeaderService $headerService,RejectService $rejectService,ApprovedService $approveService)
+    public function __construct(
+        HeaderService $headerService,
+        RejectService $rejectService,
+        ApprovedService $approveService,
+        SearchService $searchService
+    )
     {
         $this->headerService = $headerService;
         $this->rejectService = $rejectService;
         $this->approveService= $approveService;
+        $this->searchService= $searchService;
     }
 
     public function index(){
@@ -44,7 +53,7 @@ class RebateHeaderController extends Controller
 
         $catCode=  Category::find($header->category_id);
 
-        $data  = DB::select("exec dbo.sp_RebateBalance ?,?,?",array(trim($header->docnum),$catCode->code,$header->category_id));
+        $data  = DB::select("exec dbo.sp_RebateBalance ?,?,?",array(trim($header->docnum),$catCode->code,$header->category_id,Helper::checkForProv()));
 
         return response()->json([$header,$header->detail,$data,$catCode]);
 
@@ -80,5 +89,44 @@ class RebateHeaderController extends Controller
 
     }
 
+    public function searchClient(Request $request){
+
+        $data =  $this->searchService->getClientDetails($request->client) ?? [];
+
+       return $data;
+
+    }
+
+    public function cmStore(Request $request){
+
+        if (!empty($request->cm_docs)) {
+            Header::find($request->header)->update(['cm_docs'=>$request->cm_docs]);
+        }
+
+        $header = Header::find($request->header);
+
+        $fields =[
+            'approved_at'   => date("m/d/Y",strtotime($header->approved_at)),
+            'prepared_by'   => auth()->user()->getPreparedBy(),
+            'position'      => auth()->user()->getPosition(),
+            'customer'      => $header->clientname,
+            'address'       => $request->address,
+            'tin'           => $request->tin,
+            'business_style'=> $request->business_style,
+            'details'       => $request->details,
+            'numbertoword'  => ucwords($request->numbertoword),
+            'amountBelow'   => number_format($header->totalamount,2),
+            'amount'        => number_format($header->totalamount,2),
+            'rebate'        => $header->seriescode,
+        ];
+    
+        $pdf = new FPDM('assets/file/cm.pdf');
+        $pdf->Load($fields, true);
+        $pdf->Merge();
+        $pdf->Output();
+
+    }
+
+  
 
 }

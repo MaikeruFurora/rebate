@@ -78,9 +78,23 @@ class User extends Authenticatable implements Auditable
         return Static::where('rebateRole','A')->pluck('Email');
     }
 
+
+    function getPosition(){
+
+        $pos =  Static::where('tblemployee.ID',$this->ID)->join('tblposition','tblemployee.Position_id','tblposition.id')->first(['Position']);
+        
+        return $pos->Position;
+    }
+
     public function getFullname(){
         
         return $this->Lname.', '.$this->Fname.' '.$this->Mname;
+
+    }
+
+    public function getPreparedBy(){
+        
+        return $this->Fname.' '.$this->Lname;
 
     }
 
@@ -88,6 +102,12 @@ class User extends Authenticatable implements Auditable
         
         return Static::whereIn('Position_id',[177,185]);
         
+    }
+
+    public function scopeCheckIfBilling($q,$username){
+
+        return $q->where('Username',$username)->where('Position_id',187)->pluck('Email');
+
     }
 
 }

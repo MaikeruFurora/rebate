@@ -283,7 +283,14 @@ const dropdownStatus = (data) =>{
                 <a class="dropdown-item dropdown-reject" id="${data.hid}"><i class="fas fa-eject"></i> Reject</a>`;
             break;
         case (BaseModel.inArray(BaseModel.positionID,BaseModel.userAR) && (data.status == 'A')):
-            hold+= `<a class="dropdown-item dropdown-cm" id="${data.hid}" data-header="${data}"><i class="fas fa-file-signature"></i> Credit Memo</a>`;
+            hold+= `<a class="dropdown-item dropdown-cm" id="${data.hid}"
+                                                         data-rebateAmount="${data.rebateAmount}"
+                                                         data-seriescode="${data.seriescode}"
+                                                         data-approvedAt="${data.approved_at}"
+                                                         data-clientname="${data.clientname}"
+                                                         data-dr="${data.reference_1}"
+                                                         >
+                    <i class="fas fa-file-signature"></i> Credit Memo</a>`;
             break;
         default:
             return ''
@@ -322,8 +329,8 @@ $(document).on('click','a.details',function(){
         delete data[0].updated_at
         delete data[0].reference_1
         delete data[0].reference_2
-        // delete data[0].detail_1
-        // delete data[0].detail_2
+        delete data[0].detail_1
+        delete data[0].detail_2
         delete data[0].totalamount
         delete data[0].docstatus
         delete data[0].cardname
@@ -497,8 +504,6 @@ $(document).on('keyup','textarea[name="cancelremarks"]',function(){
     $(".btn-submit-cancel").prop('disabled',($(this).val().length<0))
 })
 
-
-
 rebateAmount.on('input',function(){
     if ((parseFloat($(this).val()) < 0) || ((parseFloat($(this).val()) > parseFloat(rebateBalance.val())) && depOnAmount.val()==1)) {
         $(this).addClass('is-invalid').val(0)
@@ -593,7 +598,38 @@ $(document).on('click',".dropdown-print",function(){
 })
 
 $(document).on('click','.dropdown-cm',function(){
+    console.log($(this).val());
+    let amount = $(this).attr("data-rebateAmount")
+    $("input[name=approved_at]").val(moment($(this).attr("data-approvedAt")).format('mm/D/yyyy'))
+    $("input[name=rebateAmount]").val(amount)
+    $("input[name=numbertoword]").val(
+        $.spellingNumber(amount, {
+            lang: "en",
+            wholesUnit: "",
+            fractionUnit: "cents",
+            digitsLengthW2F: 2,
+            decimalSeperator: "and"
+        })
+    );
+    $("input[name=seriescode]").val($(this).attr("data-seriescode"))
+    $("input[name=clientname]").val($(this).attr("data-clientname"))
+    $("input[name=header]").val($(this).attr("id"))
+    $("input[name=dr]").val($(this).attr("data-dr"))
+    
+    $.ajax({
+        url:'approval/details/search/client',
+        type:'POST',
+        data:{
+            _token: BaseModel._token,
+            client: $(this).attr("data-clientname")
+        }
+    }).done(function(data){
+        $("textarea[name=address]").val(data.address ?? '')
+        $("input[name=tin]").val(data.tin ?? '')
+        $("input[name=business_style]").val(data.BusinessStyle ?? '')
+    }).fail(function(a,b,c){
+        console.log(a,b,c);
+    })
     $("#creditMemo").modal("show")
-    let headerData = JSON($(this).attr("data-header"));
-    console.log(headerData);
 })
+

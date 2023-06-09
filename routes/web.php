@@ -41,6 +41,10 @@ Route::middleware(['auth:web','auth.user','preventBackHistory'])->name('authenti
     Route::get('approval/details/{header}',[RebateHeaderController::class,'detailsview']);
     Route::post('approval/details/edit/{header}',[RebateHeaderController::class,'editHeader']);
     Route::get('approval/details/print/{header}',[RebateHeaderController::class,'print']);
+    Route::post('approval/details/search/client',[RebateHeaderController::class,'searchClient']);
+    Route::get('approval/cm/store',[RebateHeaderController::class,'cmStore'])->name('cm.print');
+
+
 
     // status
     Route::post('approval/status/approve',[RebateHeaderController::class,'approved']);
@@ -66,7 +70,6 @@ Route::middleware(['auth:web','auth.user','preventBackHistory'])->name('authenti
     Route::post('report/list',[ReportController::class,'list']);
     Route::get('report/print',[ReportController::class,'print']);
 
-    
 
     // report new
     Route::post('report/by/filter',[ReportController::class,'reportByFilter'])->name('report.by.filter');

@@ -120,7 +120,6 @@ class HeaderService{
 
     }
 
-
     public function editHeader($request,$header){
 
         $data              = $this->checkBalance($request);
@@ -170,7 +169,6 @@ class HeaderService{
         return $this->detailService->store($id,$data);
 
     }
-
 
     public function headerList($request){
 
@@ -290,6 +288,8 @@ class HeaderService{
 
         $userPosition = [177,185];
 
+        $mycategory  = Access::myCategory();
+
         if ($request->ajax()) {
  
             if ($request->input('start_date') && $request->input('end_date')) {
@@ -303,9 +303,12 @@ class HeaderService{
                     $openHeaders = Header::headerList()->where('headers.status','O')->whereDate('headers.created_at','<=',$start_date);
                 
                 } else {
+                    
+                    // $headerList = Header::headerList()->where('encodedby',auth()->user()->Username)->whereDate('headers.created_at','>=',$start_date)->whereDate('headers.created_at','<=',$end_date);
+                    // $openHeaders = Header::headerList()->where('encodedby',auth()->user()->Username)->where('headers.status','O')->whereDate('headers.created_at','<=',$start_date);
 
-                    $headerList = Header::headerList()->where('encodedby',auth()->user()->Username)->whereDate('headers.created_at','>=',$start_date)->whereDate('headers.created_at','<=',$end_date);
-                    $openHeaders = Header::headerList()->where('encodedby',auth()->user()->Username)->where('headers.status','O')->whereDate('headers.created_at','<=',$start_date);
+                    $headerList = Header::headerList()->whereIn('catname',$mycategory)->whereDate('headers.created_at','>=',$start_date)->whereDate('headers.created_at','<=',$end_date);
+                    $openHeaders = Header::headerList()->whereIn('catname',$mycategory)->where('headers.status','O')->whereDate('headers.created_at','<=',$start_date);
                     
                 }
 
@@ -325,9 +328,6 @@ class HeaderService{
 
         }
     }
-
-
-
 
     public function checkBalance($request){
 

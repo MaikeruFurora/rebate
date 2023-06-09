@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Header;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,9 +89,13 @@ class ReportController extends Controller
  
 
     public function reportByCategory($request){
-        
+
         return view('report.report-by-category',[
-            'categories'    => Category::with('header')->get(),
+            'categories'    => Header::select('catname','headers.category_id','categories.id')
+            ->join('categories','headers.category_id','categories.id')
+            ->whereDate('headers.created_at',">=",Carbon::parse($request->from))
+            ->whereDate('headers.created_at',"<=",Carbon::parse($request->to))
+            ->groupBy('catname','headers.category_id','categories.id')->get(),
             'grandTotal'    => [],
             'grandTotalRU'  => [],
             'grandTotalRB'  => [],

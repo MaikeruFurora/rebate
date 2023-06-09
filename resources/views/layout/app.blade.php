@@ -71,6 +71,8 @@
         <script src="{{ asset('assets/js/wow.min.js') }}"></script>
         <script src="{{ asset('assets/js/jquery.nicescroll.js') }}"></script>
         <script src="{{ asset('assets/js/jquery.scrollTo.min.js') }}"></script>
+        <script src="{{ asset('assets/js/moment.min.js') }}"></script>
+        <script src="{{ asset('assets/js/jquerySpellingNumber.js') }}"></script>
 
         
         <script src="{{ asset('assets/js/app.js') }}"></script>

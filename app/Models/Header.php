@@ -98,4 +98,10 @@ class Header extends Model implements Auditable
 
     }
 
+    public function creditMemo(){
+
+        return $this->hasOne(CreditMemo::class);
+        
+    }
+
 }

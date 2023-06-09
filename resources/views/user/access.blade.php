@@ -96,53 +96,5 @@
     <script src="{{  asset('assets/plugins/datatables/dataTables.responsive.min.js') }} "></script>
     <script src="{{  asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }} "></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $("#datatable").DataTable({
-            processing: true,
-            language: {
-                processing: `
-                    <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>`,
-            },
-
-            ajax: `access/list`,
-            columns: [
-                {
-                    data:"username"
-                },
-                {
-                    data:"catname"
-                },
-                {
-                    data:null,
-                    render:function(data){
-                        return `<button class="btn btn-sm btn-danger" name="btnRemove" value="${data.id}">Remove</button>`
-                        console.log(data);
-                    }
-                },
-            ]
-            
-        })
-
-        $(document).on('click','button[name=btnRemove]',function(){
-            let id = $(this).val()
-            let _token = $("input[name=_token]").val()
-            $.ajax({
-                url:'access/remove',
-                type:'post',
-                data:{
-                    id, _token
-                }
-            }).done(function(data){
-                window.location.reload();
-            }).fail(function(a,b,c){
-                alert(b)
-            })
-        })
-
-        $("#datatable1").DataTable()
-
-        $("select[name=partners]").select2();
-    </script>
+    <script src="{{ asset('assets/js/user-access.js') }}"></script>
 @endsection

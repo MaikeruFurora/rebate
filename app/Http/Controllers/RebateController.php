@@ -11,8 +11,6 @@ use App\Services\HeaderService;
 use Illuminate\Http\Request;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use PHPUnit\TextUI\Help;
 
 class RebateController extends Controller
 {
@@ -27,6 +25,9 @@ class RebateController extends Controller
 
     public function index(){
 
+        // return Access::join('categories','accesses.category_id','categories.id')
+        // ->where('username','a.conda')
+        // ->pluck('categories.id');
 
         return view('rebate.dashboard',[
 

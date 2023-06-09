@@ -1,4 +1,5 @@
 <!-- Modal -->
+<form action="{{ route('authenticate.cm.print') }}"  target="_blank">@csrf
 <div class="modal fade" id="creditMemo" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="creditMemoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -9,36 +10,47 @@
                 </button>
             </div>
             <div class="modal-body p-2">
-                <form>
+                    <input type="hidden" name="header">
                    <div class="row">
                     <div class="col-8">
                         <div class="form-group">
                             <label for="mb-0">Customer</label>
-                            <input type="text" class="form-control" placeholder="Please enter customer">
+                            <input type="text" class="form-control" placeholder="Please enter customer" name="clientname" readonly>
                             <label for="mb-0">Address</label>
-                            <input type="text" class="form-control" placeholder="Please enter address">
+                            <textarea class="form-control" placeholder="Please enter address" name="address"  rows="4"></textarea>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group ">
-                            <label for="mb-0">Date</label>
-                            <input type="text" class="form-control" placeholder="Please enter date">
+                            <label for="mb-0">Date (Rebate Approved)</label>
+                            <input type="text" class="form-control" placeholder="Please enter date" readonly name="approved_at">
                             <label for="mb-0">TIN</label>
-                            <input type="text" class="form-control" placeholder="Please enter TIN">
+                            <input type="text" class="form-control" placeholder="Please enter TIN" name="tin" maxlength="20">
                             <label for="mb-0">Bus Style</label>
-                            <input type="text" class="form-control" placeholder="Please enter Bus Style">
+                            <input type="text" class="form-control" placeholder="Please enter Bus Style" name="business_style">
                         </div>
                     </div>
                    </div>
                    <div class="row border-top">
-                        <div class="col-12">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="mb-0" id="amountToWord">Amount to Word</label>
+                                <input type="text" class="form-control" placeholder="Please enter" name="numbertoword">
+                            </div>
+                        </div>
+                        <div class="col-4">
                             <div class="form-group">
                                 <label for="mb-0">Amount</label>
-                                <input type="text" class="form-control" placeholder="Please enter address">
+                                <input type="text" class="form-control" readonly name="rebateAmount">
                             </div>
+                        </div>
+                   </div>
+                   <div class="row">
+                        <div class="col-12">
+                           
                             <div class="form-group">
                                 <label for="mb-0">Description</label>
-                                <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea>
+                                <textarea id="my-textarea" class="form-control" rows="3" name="details"></textarea>
                             </div>
                         </div>
                    </div>
@@ -46,17 +58,17 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <div class="form-group mb-0 p-0 row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Invoice</label>
+                                    <label for="" class="col-sm-2 col-form-label">Invoice</label>
                                     <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail3">
+                                    <input type="text" class="form-control" id="" maxlength="15" name="invoice">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-group mb-0 p-0 row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">DR</label>
+                                    <label for="" class="col-sm-2 col-form-label">DR</label>
                                     <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail3">
+                                    <input type="text" class="form-control" id="" maxlength="15" name="dr">
                                     </div>
                                 </div>
                             </div>
@@ -64,28 +76,36 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <div class="form-group mb-0 p-0 row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">PO</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail3">
+                                    <label for="" class="col-sm-3 col-form-label">PO</label>
+                                    <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="" maxlength="15" name="po">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-group mb-0 p-0 row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Rebate</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail3">
+                                    <label for="" class="col-sm-3 col-form-label">Rebate</label>
+                                    <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="" maxlength="15" name="seriescode" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group mb-0 p-0 row">
+                                    <label for="" class="col-sm-3 col-form-label">CM Docs</label>
+                                    <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="" maxlength="15" name="cm_docs">
                                     </div>
                                 </div>
                             </div>
                         </div>
                    </div>
-                </form>
-            </div>
-            <div class="modal-footer p-1">
-                <button type="button" style="font-size:11px" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" style="font-size:11px" class="btn btn-primary btn-sm">Save & print</button>
+                </div>
+                <div class="modal-footer p-1">
+                    <button type="button" style="font-size:11px" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" style="font-size:11px" class="btn btn-primary" id="print">Print</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>

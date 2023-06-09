@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        @media print{@page {size: landscape}}
+    </style>
 </head>
 <body>
-<div class="container">
+<div class="">
     <div class="row">
         <div class="col-4 mb-3 mt-3" style="font-size:11px">
             <table>
@@ -39,15 +42,15 @@
         <thead >
             <tr>
                 <th width="3%">#</th>
-                <th width="7%">CREATED AT</th>
-                <th width="8%">APPROVED AT</th>
+                <th width="7%">CREATED`AT</th>
+                <th width="8%">APPROVED`AT</th>
                 <th width="30%">NAME</th>
                 <th width="10%">REFERENCE</th>
                 <th width="5%">VOUCHER</th>
                 <th width="10%">CATEGORY</th>
                 <th width="10%">REBATE AMOUNT</th>
                 <th width="10%">REBATE USED</th>
-                <th width="10%">REBTE BALANCE</th>
+                <th width="10%">REBTE`BAL</th>
             </tr>
         </thead>
         <tbody>
@@ -62,12 +65,14 @@
              <td>{{ $value->catname }}</td>
              <td>{{ $value->rebateAmount }}</td>
              <td>{{ number_format($value->rebateUsed,4) }}</td>
-             <td>{{ number_format($value->rebateBalance,4) }}</td>
+             <td>{{ ($value->status!='C' && $value->status!='R')?(number_format($value->rebateBalance,4)): number_format(0,4); }}</td>
          </tr>
      @php 
+      if ($item->status!='C' && $item->status!='R') {
         $total  +=$value->rebateAmount;
         $totalRU+=$value->rebateUsed;
         $totalRB+=$value->rebateBalance;
+      }
      @endphp
      @empty
          <tr>
@@ -80,7 +85,7 @@
         array_push($grandTotalRB,$totalRB);
      @endphp
          <tr>
-             <th colspan="6" class="text-right">Total</td>
+             <th colspan="7" class="text-right">Total</td>
              <th class="text-left">{{ number_format($total,4) }}</th>
              <th class="text-left">{{ number_format($totalRU,4) }}</th>
              <th class="text-left">{{ number_format($totalRB,4) }}</th>
@@ -92,7 +97,7 @@
 
     <table class="table table-sm table-bordered"  style="font-size:10px">
         <tr>
-            <th width="70%" colspan="6" class="text-right">Grand Total</th>
+            <th width="70%" colspan="7" class="text-right">Grand Total</th>
             <th width="10%" class="text-center">{{ number_format(array_sum($grandTotal),4) ?? null }}</th>
             <th width="10%" class="text-center">{{ number_format(array_sum($grandTotalRU),4) }}</th>
             <th width="10%" class="text-center">{{ number_format(array_sum($grandTotalRB),4) }}</th>

@@ -79,4 +79,14 @@ class Helper{
         }
 
     }
+
+    public static function checkForProv(){
+
+        $str = auth()->user()->getPosition();
+
+        return stristr($str,"AUDIT") ? 'main' :'not';
+
+    }
+
+    
 }
