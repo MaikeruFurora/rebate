@@ -321,10 +321,7 @@ class HeaderService{
 
                      if (auth()->user()->RebateRole!='U') {
 
-                           $headerList = DB::select("
-                            select * from [dbo].[vw_approval] where status in {$stmtStatus} created_at >= '{$start_date}' and created_at <='{$end_date}' union all  select * from [dbo].[vw_approval] where status='O' and created_at <= '{$end_date}'
-                            ");
-
+                           $headerList = DB::select("select * from [dbo].[vw_approval] where status in ($stmtStatus) and created_at >= '{$start_date}' and created_at <='{$end_date}' union all  select * from [dbo].[vw_approval] where status='O' and created_at <= '{$end_date}'");
                         
                     } else {
                 
