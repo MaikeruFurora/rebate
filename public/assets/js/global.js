@@ -82,6 +82,7 @@ const BaseModel = {
      leaders:      $("meta[name='leaders']").attr("content"),
      editModal:    $("#editModal"),
      dateRangeModal:$("#dateRangeModal"),
+     needAccess:    [184],
      userAR: new Array(177,185), // AR TEAM (ASSOCIATE & TEAM LEADER)
 
      checkIfEmptyRebate:(rebAmnt) => {

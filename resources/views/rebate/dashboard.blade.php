@@ -8,7 +8,15 @@
 <!-- Sweet Alert -->
 <link href="{{ asset('assets/plugins/sweetalert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
-  
+
+ <!-- DataTables -->
+ <link href="{{ asset('assets/plugins/datatables/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+ <link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+ <link href="{{ asset('assets/plugins/datatables/fixedHeader.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+ <link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+ <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css"/>
+ <link href="{{ asset('assets/plugins/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
 @endsection
 @section('content')
 <!-- Page-Title -->
@@ -70,10 +78,20 @@
                     </div>
                     <div class="form-row">
                         
-                        <div class="form-group col-md-4">
+                        {{-- <div class="form-group col-md-4">
                             <label for="">Reference 1</label>
                             <input type="text" class="form-control" name="reference_1" readonly>
-                        </div>
+                        </div> --}}
+                        <div class="form-group col-md-4">
+                            <label for="">Reference 1</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="reference_1" readonly>
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-primary" id="modalRef"
+                                    data-toggle="modal" data-target="#referenceModal"><i class="fas fa-sync-alt text-white"></i></span>
+                                </div>
+                            </div>
+                            </div>
                         <div class="form-group col-md-4">
                             <label for="">Reference 2</label>
                             <input type="text" class="form-control" name="reference_2" readonly>
@@ -190,8 +208,7 @@
     </form>
     </div>
 </div>
-
-
+<x-reference-modal/>
 @endsection
 
 @section('moreJs')
@@ -199,5 +216,10 @@
     <!-- Sweet-Alert  -->
     <script src="{{  asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{  asset('assets/plugins/select2/select2.min.js') }}"></script>
+
+     <!-- Required datatable js-->
+    <script src="{{  asset('assets/plugins/datatables/jquery.dataTables.min.js') }} "></script>
+    <script src="{{  asset('assets/plugins/datatables/dataTables.bootstrap4.min.js') }} "></script>
+
     <script src="{{  asset('assets/js/dashboard.js') }}"></script>
 @endsection

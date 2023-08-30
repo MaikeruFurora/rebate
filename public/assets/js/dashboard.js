@@ -69,7 +69,10 @@ $("#searchInvoice").on('submit',function(e){
             detail_1.val(data[0][0].detail_1)
             detail_2.val(data[0][0].detail_2)
             comments.val(data[0][0].comments)
-            
+
+            console.log(data[2]);
+            tableReference((data[3].length>0) ? data[3] : [],data[2])
+
             clientname.val((restrictData.typeCode=="EDS" || restrictData.typeCode=="VDS")?'':data[0][0].cardname)
             checkZeroBalance()
             table(data)
@@ -121,6 +124,55 @@ const table = (data)=>{
 
     tableDetail.html(html)
 }
+
+// reference start code
+
+const tableReference = (datas,refUsed) =>{
+
+    const listRef = refUsed.map(val=>{
+        if (val.status=="A" || val.status=="O") {
+            return val.reference_1
+        }
+    })
+
+    const valuesRef = datas.filter(e => listRef.indexOf(e.CVNo) > -1 ? false : true);
+
+    $("#tableReference").DataTable({
+        bDestroy: true,
+        info: false,
+        ordering: false,
+        paging: false,
+        bFilter: false,
+        data: valuesRef,
+        columns: [
+            { 
+                data:null,
+                render: function (data, type, row, meta) {
+                    return `<input type="radio" name="attach_ref" value="${data.CVNo}">`;
+                }
+            },
+            { data: "CVNo" },
+            { data: "Amount" },
+        ]
+    })
+
+}
+
+// $("button[name=btnRef]").on("click",function(){
+//     let cvno = $("#tableReference tbody > tr > td > input:radio:checked ").$("");
+//     $("input[name=reference_1]").val(cvno)
+//     $("input[name=rebateAmount]").val()
+// })
+
+$("#tableReference").on("click", "input[type=radio]", function() {
+    let $tds = $(this).closest('tr').find('td');
+    let cvno = $tds.eq(1).text();
+    let amount = $tds.eq(2).text();
+    $("input[name=reference_1]").val(cvno)
+    $("input[name=rebateAmount]").val(amount)
+  });
+
+// refrence end code
 
 $("select[name='category']").on('change',function(){
     let catData = JSON.parse(this[this.selectedIndex].id);

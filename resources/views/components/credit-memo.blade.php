@@ -72,6 +72,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <div class="checkbox checkbox-primary text-center">
+                                            <input id="checkbox333" type="checkbox" name="vatable">
+                                            <label for="checkbox333">
+                                                Vatable
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">

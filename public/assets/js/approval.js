@@ -13,7 +13,7 @@ const header        = [];
 let   id
 rebateAmount.number( true, 4 );
 rebateBalance.number( true, 4 );
-$(document).on('change','input[type="checkbox"]',function(){
+$(document).on('change','input[name="rebateCheckBox"]',function(){
     console.log($(this).val());
     if($(this).is(":checked")){
         header.push($(this).val());
@@ -173,10 +173,9 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
             ],
             responsive: true,
             drawCallback: function() {
-                console.log(BaseModel.positionID);
-                console.log();
                 const leaders = JSON.parse(BaseModel.leaders)
-                let hasRows = leaders.includes(parseInt(BaseModel.positionID))
+                const newArr  = leaders.concat(BaseModel.needAccess) 
+                let hasRows   = newArr.includes(parseInt(BaseModel.positionID))
                 console.log(hasRows);
                 $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
                 $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
@@ -213,7 +212,7 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
                     data:null,
                     render:function(data){
                         if (data.status=='O' && BaseModel._ucategory!="U") {
-                            return `<input type="checkbox" class="form-check" id="" value="${data.hid}">`
+                            return `<input type="checkbox" name="rebateCheckBox" class="form-check" id="" value="${data.hid}">`
                         }
                         return ''
                     }
@@ -655,6 +654,7 @@ $(document).on('click',".dropdown-print",function(){
     let url = `approval/details/print/${id}`
     BaseModel.loadToPrint(url)
 })
+
 
 $(document).on('click','.dropdown-cm',function(){
     $("#cmForm")[0].reset()

@@ -17,9 +17,11 @@ class SearchService{
 
         $data2   = DB::select("exec dbo.sp_RebateBalance ?,?,?",array(trim($request->search),$catCode->code,$request->category));
 
-        $data3   = Header::where('docnum',$request->search)->where('category_id',$catCode->id)->get(['docnum','rebateAmount','encodedBy','created_at','status']);
+        $data3   = Header::where('docnum',$request->search)->where('category_id',$catCode->id)->get(['docnum','rebateAmount','encodedBy','created_at','status','reference_1']);
 
-        return response()->json([$data1,$data2,$data3]);
+        $refrenceCV    = DB::select("select ('CV'+CVNo) as CVNo,Amount from AIMSAP02.vds.dbo.tbl_Payment with (nolock) where controlno = '{$request->search}'");
+
+        return response()->json([$data1,$data2,$data3,$refrenceCV]);
 
     }
 

@@ -137,7 +137,14 @@ class RebateHeaderController extends Controller
             'rebate'        => $header->seriescode,
         ];
     
-        $pdf = new FPDM('assets/file/cm.pdf');
+        if(isset($request->vatable)) {
+            $fields['vatablesales'] = number_format(($header->rebateAmount/1.12),2);
+            $fields['vattwelve'] = number_format((($header->rebateAmount/1.12)/0.12),2);
+            $pdf = new FPDM('assets/file/cm-vatable.pdf');
+        }else{
+            $pdf = new FPDM('assets/file/cm-vatable-not.pdf');
+        }
+        
         $pdf->Load($fields, true);
         $pdf->Merge();
         $pdf->Output();
