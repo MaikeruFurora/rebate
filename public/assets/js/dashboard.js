@@ -70,7 +70,7 @@ $("#searchInvoice").on('submit',function(e){
             detail_2.val(data[0][0].detail_2)
             comments.val(data[0][0].comments)
 
-            console.log(data[2]);
+            console.log(data[3]);
             tableReference((data[3].length>0) ? data[3] : [],data[2])
 
             clientname.val((restrictData.typeCode=="EDS" || restrictData.typeCode=="VDS")?'':data[0][0].cardname)
@@ -136,7 +136,7 @@ const tableReference = (datas,refUsed) =>{
     })
 
     const valuesRef = datas.filter(e => listRef.indexOf(e.CVNo) > -1 ? false : true);
-
+    console.log(valuesRef);
     $("#tableReference").DataTable({
         bDestroy: true,
         info: false,
@@ -148,6 +148,8 @@ const tableReference = (datas,refUsed) =>{
             { 
                 data:null,
                 render: function (data, type, row, meta) {
+                    // console.log(listRef);
+                    // console.log(data);
                     return `<input type="radio" name="attach_ref" value="${data.CVNo}">`;
                 }
             },

@@ -30,80 +30,79 @@ class HeaderService{
 
     public function storeHeader($request){
 
-            $restictForNotApprove = ['VDS','EDS'];
-        
-            $category = Category::find($request->category);
+        $restictForNotApprove = ['VDS','EDS'];
+    
+        $category = Category::find($request->category);
 
-            $data = $this->checkBalance($request);
+        $data = $this->checkBalance($request);
 
-            $cleanRebateAmount = floatval(preg_replace('/[^\d.]/', '', $request->rebateAmount));
+        $cleanRebateAmount = floatval(preg_replace('/[^\d.]/', '', $request->rebateAmount));
 
-            // return $data[0]['balance'];
+        // return $data[0]['balance'];
 
-            if ($cleanRebateAmount > $data[0]['balance'] && $data[0]['accepted']) {
+        if ($cleanRebateAmount > $data[0]['balance'] && $data[0]['accepted']) {
 
+            return response()->json([
+
+                'msg'    => 'Rebate amount exceeded the remaining balance',
+
+                'result' => $data[0]['balance']
+
+            ]);
+
+        } else {
+            
+             $check = Helper::clientSearch($request->clientname,'check');
+
+             //eds no need client name
+            if (!count($check) && $category->code!="EDS") {
+                
                 return response()->json([
 
-                    'msg'    => 'Rebate amount exceeded the remaining balance',
-
-                    'result' => $data[0]['balance']
+                    'msg'    => 'Please Check the Client name',
 
                 ]);
 
             } else {
-                
-                $check = Helper::clientSearch($request->clientname,'check');
-  
-                return count($check);
-                 //eds no need client name
-                if (!count($check) && $category->code!="EDS") {
-                    
-                    return response()->json([
 
-                        'msg'    => 'Please Check the Client name',
-    
+                if (in_array($category->code,$restictForNotApprove)) {
+                    
+                    $request->request->add([
+                        'search'=>$request->reference
                     ]);
+                   
+                    $content = $this->searchService->invoice($request)->getContent();
+
+                    $decodedData = json_decode($content, true);
+
+                    if ($decodedData[0][0]['docstatus']!="APPROVED") {
+
+                        return response()->json([
+
+                            'msg'    => 'Please check status. It should be approved',
+        
+                        ]);
+
+                    }else{
+
+                        $this->saveTransaction($request);
+                        
+                    }
 
                 } else {
 
-                    if (in_array($category->code,$restictForNotApprove)) {
-                        
-                        $request->request->add([
-                            'search'=>$request->reference
-                        ]);
-                       
-                        $content = $this->searchService->invoice($request)->getContent();
-
-                        $decodedData = json_decode($content, true);
-
-                        if ($decodedData[0][0]['docstatus']!="APPROVED") {
-
-                            return response()->json([
-
-                                'msg'    => 'Please check status. It should be approved',
-            
-                            ]);
-
-                        }else{
-
-                            $this->saveTransaction($request);
-                            
-                        }
-
-                    } else {
-
-                       $this->saveTransaction($request);
-            
-                    }
-                    
-
+                   $this->saveTransaction($request);
+        
                 }
                 
 
-                
             }
+            
 
-    }
+            
+        }
+
+}
 
     public function saveTransaction($request){
 

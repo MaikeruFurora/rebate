@@ -212,7 +212,7 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
                     data:null,
                     render:function(data){
                         if (data.status=='O' && BaseModel._ucategory!="U") {
-                            return `<input type="checkbox" name="rebateCheckBox" class="form-check" id="" value="${data.hid}">`
+                            return `<input type="checkbox" class="form-check" name="rebateCheckBox" id="" value="${data.hid}">`
                         }
                         return ''
                     }
@@ -654,7 +654,6 @@ $(document).on('click',".dropdown-print",function(){
     let url = `approval/details/print/${id}`
     BaseModel.loadToPrint(url)
 })
-
 
 $(document).on('click','.dropdown-cm',function(){
     $("#cmForm")[0].reset()
