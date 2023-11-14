@@ -19,7 +19,7 @@ class SearchService{
 
         $data3   = Header::where('docnum',$request->search)->where('category_id',$catCode->id)->get(['docnum','rebateAmount','encodedBy','created_at','status','reference_1']);
 
-        $refrenceCV    = DB::select("select ('CV'+CVNo) as CVNo,Amount from AIMSAP02.vds.dbo.tbl_Payment with (nolock) where controlno = '{$request->search}'");
+        $refrenceCV = ($catCode->catname=="CHARGE TO BP") ? DB::select("select ('CV'+CVNo) as CVNo,Amount from AIMSAP02.vds.dbo.tbl_Payment with (nolock) where controlno = '{$request->search}'") : [];
 
         $output = $this->cvRef($data3,$refrenceCV);
 
