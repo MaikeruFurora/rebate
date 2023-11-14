@@ -11,9 +11,12 @@ class dateRangeModal extends Component
      *
      * @return void
      */
-    public function __construct()
+
+    public $categories;
+
+    public function __construct($categories)
     {
-        //
+        $this->categories = $categories;
     }
 
     /**

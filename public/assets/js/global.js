@@ -117,3 +117,12 @@ const sweeetAlert = (title,text,icon) => Swal.fire({
     allowOutsideClick: false,
     allowEscapeKey: false
 })
+
+$("#taggedRebate").hide()
+$("form[id=reportForm]").find('select[name=type]').on('change',function(){
+    if ($(this).val()=='taggedRebate') {
+        $("#taggedRebate").show()
+    }else{
+        $("#taggedRebate").hide()
+    }
+})

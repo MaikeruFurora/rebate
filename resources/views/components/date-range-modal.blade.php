@@ -1,7 +1,7 @@
 <div class="modal fade" id="dateRangeModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="dateRangeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
-        <form target="_blank" action="{{ route('authenticate.report.by.filter') }}" autocomplete="off" method="post">@csrf
+        <form id="reportForm" target="_blank" action="{{ route('authenticate.report.by.filter') }}" autocomplete="off" method="post">@csrf
             <div class="modal-header p-1">
               <h5 class="modal-title" id="dateRangeModalLabel">Filter Report</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -16,12 +16,17 @@
                         <option value="reportByStatus">Report By Status</option>
                         <option value="rebateUsed">Rebate Used</option>
                         <option value="rebateUnused">Rebate Unused</option>
+                        <option value="taggedRebate">Tagged Rebate Report</option>
                     </select>
                 </div>
-                {{-- <div class="form-group">
+                <div class="form-group" id="taggedRebate">
                   <label for="">Category</label>
-                  <select name="filtercategory" class="custom-select custom-select-sm"></select>
-                </div> --}}
+                  <select name="category" class="custom-select custom-select-sm">
+                    @foreach ($categories as $item)
+                        <option value="{{ $item->id }}">{{ $item->catname }}</option>
+                    @endforeach
+                  </select>
+                </div>
                 <div class="input-daterange" id="report-range-modal">
                     <div class="form-group">
                         <label for="">Date From</label>

@@ -151,6 +151,39 @@ class ReportController extends Controller
         ]);
 
     }
+
+    public function reporByTagged($request){
+
+        $data  = DB::select("exec dbo.get_taggedRebateReport ?,?,?",array(trim($request->category),$request->from,$request->to));
+
+        $tmp = array();
+        $output = array();
+
+        foreach($data as $key => $arg){
+            $tmp[$arg->seriescode][] = $arg;
+        }
+        
+        foreach($tmp as $key => $value){
+
+                $output[] =  [
+                    'DeliveryDate'         => $value[0]->DeliveryDate,
+                    'dateRebateApplied'    => $value[0]->dateRebateApplied,
+                    'seriescode'           => $value[0]->seriescode,
+                    'clientname'           => $value[0]->clientname,
+                    'data'                 => $value
+                ];
+
+        }
+
+        // return $output;
+
+        return view('report.report-by-tagged',[
+            'category'   => Category::find($request->category)->catname,
+            'data'       => $output,
+            'dateFrom'   => $request->from,
+            'dateTo'     => $request->to,
+        ]);
+    }
     
     public function reportByFilter(Request $request){
 
@@ -160,6 +193,9 @@ class ReportController extends Controller
                 break;
             case 'reportByCategory':
                 return $this->reportByCategory($request);
+                break;
+            case 'taggedRebate':
+                return $this->reporByTagged($request);
                 break;
             default:
                     return $this->reportByRebateUsed($request);

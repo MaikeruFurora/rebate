@@ -45,7 +45,9 @@
             </div>
         </div>
         <!-- end wrapper -->
-        <x-date-range-modal/>
+        @if ( in_array(request()->segment(2),['dashboard','approval']) )
+            <x-date-range-modal :categories="$categories ?? []"/>
+        @endif
         <!-- Footer -->
         <footer class="footer">
             <div class="container-fluid">
