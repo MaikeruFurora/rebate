@@ -36,6 +36,7 @@
         <thead>
             <tr>
                 <th class="text-center" width="3%">#</th>
+                <th class="text-center" width="3%">Doc No.</th>
                 <th class="text-center" width="5%">DELIVERY DATE</th>
                 <th class="text-center" width="5%">REBATE VOUCHER</th>
                 <th class="text-center" width="5%">POSTING DATE</th>
@@ -54,6 +55,7 @@
         @endphp
            <tr>
             <th class="text-center">{{ ++$key }}</th>
+            <th class="text-center">{{ $item['docnum'] }}</th>
             <th class="text-center">{{ $item['DeliveryDate'] }}</th>
             <th class="text-center">{{ $item['seriescode'] }}</th>
             <th class="text-center" width="8%">{{ $item['dateRebateApplied'] }}</th>

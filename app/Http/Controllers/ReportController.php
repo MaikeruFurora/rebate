@@ -166,6 +166,7 @@ class ReportController extends Controller
         foreach($tmp as $key => $value){
 
                 $output[] =  [
+                    'docnum'               => $value[0]->docnum ?? '',
                     'DeliveryDate'         => $value[0]->DeliveryDate,
                     'dateRebateApplied'    => $value[0]->dateRebateApplied,
                     'seriescode'           => $value[0]->seriescode,
@@ -174,8 +175,6 @@ class ReportController extends Controller
                 ];
 
         }
-
-        // return $output;
 
         return view('report.report-by-tagged',[
             'category'   => Category::find($request->category)->catname,
