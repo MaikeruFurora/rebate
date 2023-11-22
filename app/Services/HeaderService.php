@@ -288,7 +288,7 @@ class HeaderService{
 
     public function headerListData($request){
 
-        $userPosition = [177,185];
+        $userPosition = [177,185,186];
 
         $hd = Access::myCategory();
         $mycategory  = "'".implode ( "', '", $hd ) . "'";

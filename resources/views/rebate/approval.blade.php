@@ -53,9 +53,9 @@
 
 <div class="row">
         <div class="col-12 mt-4">
-            <div class="@if(in_array(auth()->user()->Position_id,[177,185])) col-12 @else col-5 @endif">
+            <div class="@if(in_array(auth()->user()->Position_id,[177,185,186])) col-12 @else col-5 @endif">
                 <div class="input-group border">
-                    @if (in_array(auth()->user()->Position_id,[177,185]))
+                    @if (in_array(auth()->user()->Position_id,[177,185,186]))
                         <select name="category" id="" class="form-control">
                             <option value="">No Category</option>
                             @foreach($categories as $item)
