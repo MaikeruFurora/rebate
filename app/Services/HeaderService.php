@@ -288,6 +288,7 @@ class HeaderService{
 
     public function headerListData($request){
 
+        //user access for filtering
         $userPosition = [177,185,186];
 
         $hd = Access::myCategory();
