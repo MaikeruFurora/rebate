@@ -183,68 +183,21 @@ class HeaderService{
     
         $filter = $search['value'];
     
-        $sortColumns = array(
-           'updated_at'
-        );
 
-        switch (auth()->user()->RebateRole) {
-            
-            case 'U':
-
-                $query = Header::headerList();
-                // ->where('encodedby',auth()->user()->Username);
-                
-                // $mycategory  = Access::myCategory();
-                
-                // if (count($mycategory)<0) {
-                    
-                //     $query = Header::headerList()->where('encodedby',auth()->user()->Username);
-
-                // } else {
-
-                //     $strRepOne= str_replace('"', "'",$mycategory);
-    
-                //     $strRepTwo  = str_replace(array('[',']',"\/"),' ',$strRepOne);
-    
-                //     $userList = DB::select("select username from [dbo].[vm_user_access] where catname in (".$strRepTwo.") group by username");
-    
-                //     $usernameList = collect($userList)->pluck('username');
-
-                //     $query = Header::headerList()->whereIn('encodedby',$usernameList);
-
-                // }
-                
-                break;
-                
-            default:
-                $query = Header::headerList();
-                break;
-        }
-
+        $query = Header::headerList();
     
         if (!empty($filter)) {
             $query
             ->orWhere('categories.catname', 'like', '%'.$filter.'%')
-            // ->orWhere('docdate', 'like', '%'.$filter.'%')
-            // ->orWhere('totalAmount', 'like', '%'.$filter.'%')
             ->orWhere('seriescode', 'like', '%'.$filter.'%')
-            // ->orWhere('reference_1', 'like', '%'.$filter.'%')
-            // ->orWhere('reference_2', 'like', '%'.$filter.'%')
-            // ->orWhere('docstatus', 'like', '%'.$filter.'%')
-            // ->orWhere('itemcode', 'like', '%'.$filter.'%')
             ->orWhere('reference', 'like', '%'.$filter.'%')
             ->orWhere('encodedby', 'like', '%'.$filter.'%');
         }
     
         $recordsTotal = $query->count();
-          
-        // $sortColumnName = $sortColumns[$order[0]['column']];
-    
+              
         $query->take($length)->skip($start);
 
-        // if($draw==1){
-        //     $query->orderBy($sortColumnName, $order[0]['dir']);
-        // }
     
         $json = array(
             'draw' => $draw,
@@ -353,9 +306,88 @@ class HeaderService{
 
         }
     }
+    public function dataTableServerSide($request)
+    {
+
+        $search = $request->query('search', array('value' => '', 'regex' => false));
+        $draw   = $request->query('draw', 0);
+        $start  = $request->query('start', 0);
+        $length = $request->query('length', 25);
+        $order  = $request->query('order', array(1, 'asc'));
+
+        $filter = $search['value'];
+
+        $query = DB::table('headers')
+        ->selectRaw("
+            headers.id as hid,
+            [headers].[created_at], [headers].[approved_at], [category_id], [docdate], [clientname], [cardname],
+            [docnum], [reference_1], [reference_2], [itemcode], [detail_1], [detail_2], [totalamount], [docstatus],
+            [comments], [reason], [rebateAmount], [encodedby], [approvedby], [cancelremarks], [cancelled_at], [rejected_at],
+            [rejectremarks], [reference], [seriescode], [status], [cm_docs], [catname],
+            (CASE WHEN status='A' THEN 'APPROVED' WHEN status='O' THEN 'OPEN' WHEN status='C' THEN 'CANCELLED' WHEN status='R' THEN 'REJECTED' END) as statusname,
+            ISNULL((SELECT SUM(a.creditsum)
+                    FROM [AIMSAP01].arvinaim.dbo.rct3 a WITH (NOLOCK)
+                    INNER JOIN [AIMSAP01].arvinaim.dbo.orct b ON a.DocNum=b.DocNum
+                    WHERE b.Canceled='N'
+                    AND owneridnum COLLATE SQL_Latin1_General_CP850_CI_AS= [seriescode]), 0) AS rebateUsed,
+            rebateAmount - ISNULL((SELECT SUM(a.creditsum)
+                                FROM [AIMSAP01].arvinaim.dbo.rct3 a WITH (NOLOCK)
+                                INNER JOIN [AIMSAP01].arvinaim.dbo.orct b ON a.DocNum=b.DocNum
+                                WHERE b.Canceled='N'
+                                AND owneridnum COLLATE SQL_Latin1_General_CP850_CI_AS= [seriescode]), 0) AS rebateBalance
+        ")
+        ->join('categories', 'headers.category_id', '=', 'categories.id');
+
+        if (!empty($filter)) {
+            $query
+            ->orWhere('categories.catname', 'like', '%'.$filter.'%')
+            ->orWhere('seriescode', 'like', '%'.$filter.'%')
+            ->orWhere('reference', 'like', '%'.$filter.'%')
+            ->orWhere('encodedby', 'like', '%'.$filter.'%');
+        }
+        $recordsTotal = $query->count();
+                
+        $query->take($length)->skip($start);
 
 
+        $json = array(
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsTotal,
+            'data' => [],
+        );
 
+        $products = $query->get();
+        
+        foreach ($products as $value) {
+            
+            $json['data'][] = [
+                "id"            => $value->hid,
+                "catname"       => $value->catname,
+                "docdate"       => !empty($value->docdate)? date("m/d/Y",strtotime($value->docdate)):'',
+                "docstatus"     => $value->docstatus,
+                "totalamount"   => number_format($value->totalamount,4),
+                "reference_1"   => $value->reference_1,
+                "reference_2"   => $value->reference_2,
+                "seriescode"    => $value->seriescode,
+                "cardname"      => $value->cardname,
+                'comments'      => $value->comments,
+                'clientname'    => $value->clientname,
+                'encodedby'     => $value->encodedby,
+                'rebateAmount'  => $value->rebateAmount,
+                'rebateBalance' => $value->rebateBalance,
+                'reference'     => $value->reference,
+                'reason'        => trim(Str::limit($value->reason, 40)),
+                'approved_at'   => $value->approved_at,
+                'cancelled_at'  => $value->cancelled_at,
+                'rejected_at'   => $value->rejected_at,
+                'status'        => $value->status,
+                
+            ];
+        }
+
+        return $json;
+    }
 
     public function checkBalance($request){
 

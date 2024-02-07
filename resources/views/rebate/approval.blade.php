@@ -53,8 +53,8 @@
 
 <div class="row">
         <div class="col-12 mt-4">
-            <div class="@if(in_array(auth()->user()->Position_id,[177,185,186])) col-12 @else col-5 @endif">
-                <div class="input-group border">
+            <div class="@if(in_array(auth()->user()->Position_id,[177,185,186])) col-12 @else col-6 @endif">
+                <div class="input-group ">
                     @if (in_array(auth()->user()->Position_id,[177,185,186]))
                         <select name="category" id="" class="form-control">
                             <option value="">No Category</option>
@@ -64,7 +64,7 @@
                         </select>
                         <input type="text" value="" class="form-control typeahead  border" name="clientname" autocomplete="off">
                     @else
-                        <select name="status" id="" class="form-control">
+                        <select name="status" id="" class="form-control border">
                             <option value="all">All Status</option>
                             <option value="O">Pending/Open</option>
                             <option value="A">Approved</option>
@@ -75,6 +75,7 @@
                     <input type="date" value="{{ date('Y-m-d') }}" class="form-control border" name="from">
                     <input type="date" value="{{ date('Y-m-d') }}" class="form-control border" name="to">
                     <button class="btn btn-primary" id="filter">Filter</button>
+                    <button class="ml-3 btn btn-sm btn-primary" name="searchData">Search Data</button>
                 </div>
             </div>
           <div class="card mt-4">
@@ -122,6 +123,7 @@
 </div> <!-- end container-fluid -->
 <x-modal-form></x-modal-form>
 <x-credit-memo></x-credit-memo>
+<x-search-item></x-search-item>
 @endsection
 
 @section('moreJs')
@@ -147,6 +149,7 @@
     <script src="{{  asset('assets/plugins/datatables/dataTables.responsive.min.js') }} "></script>
     <script src="{{  asset('assets/plugins/datatables/responsive.bootstrap4.min.js') }} "></script>
     <script src="{{  asset('assets/js/approval.js') }}"></script>
+    <script src="{{  asset('assets/js/searchData.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
     <script>
          $('input.typeahead').typeahead({

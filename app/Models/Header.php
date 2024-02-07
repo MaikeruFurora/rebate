@@ -22,7 +22,7 @@ class Header extends Model implements Auditable
 
         return $q->select(['headers.id as hid','categories.id','docnum','docdate','totalamount','reference_1','reference_2','docstatus','seriescode',
                     'itemcode','cardname','reason','rebateAmount','encodedby','reference','comments','status','clientname','headers.created_at',
-                    'approved_at','cancelled_at','catname','headers.updated_at','rejected_at',''])
+                    'approved_at','cancelled_at','catname','headers.updated_at','rejected_at'])
                     ->join('categories','headers.category_id','categories.id');
 
     }

@@ -87,5 +87,18 @@ class RebateController extends Controller
         
     }
 
+    public function searchData(Request $request){
+        return  DB::select("select * from [dbo].[vw_approval] 
+                    where [clientname] like '%{$request->search}%' or 
+                          [reference] like '%{$request->search}%' or 
+                          [catname] like '%{$request->search}%' or 
+                          [cardname] like '%{$request->search}%' or
+                          [seriescode] like '%{$request->search}%'");
+    }
+
+
+    public function list(Request $request){
+        return $this->headerService->dataTableServerSide($request);
+    }
 
 }

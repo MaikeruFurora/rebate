@@ -34,6 +34,7 @@ Route::middleware(['auth:web','auth.user','preventBackHistory'])->name('authenti
     Route::post('dashboard/store',[RebateController::class,'store']);
     Route::post('dashboard/checking',[RebateController::class,'checking']);
     Route::post('dashboard/search/client',[RebateController::class,'fetchClientName']);
+    Route::get('dashboard/rebate/list',[RebateController::class,'list'])->name('dashboard.rebate.list');
     
     //approval
     Route::get('approval',[RebateHeaderController::class,'index'])->name('approval');
@@ -44,8 +45,7 @@ Route::middleware(['auth:web','auth.user','preventBackHistory'])->name('authenti
     Route::post('approval/details/search/client',[RebateHeaderController::class,'searchClient']);
     Route::get('approval/details/search/client-name',[RebateHeaderController::class,'searchClientName']);
     Route::get('approval/cm/store',[RebateHeaderController::class,'cmStore'])->name('cm.print');
-
-
+    Route::post('approval/search',[RebateController::class,'searchData'])->name('approval.search');
 
     // status
     Route::post('approval/status/approve',[RebateHeaderController::class,'approved']);
