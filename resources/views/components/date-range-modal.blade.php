@@ -22,6 +22,7 @@
                 <div class="form-group" id="taggedRebate">
                   <label for="">Category</label>
                   <select name="category" class="custom-select custom-select-sm">
+                    <option value="all">All</option>
                     @foreach ($categories as $item)
                         <option value="{{ $item->id }}">{{ $item->catname }}</option>
                     @endforeach

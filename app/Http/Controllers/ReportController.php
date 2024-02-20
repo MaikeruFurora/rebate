@@ -177,7 +177,7 @@ class ReportController extends Controller
         }
 
         return view('report.report-by-tagged',[
-            'category'   => Category::find($request->category)->catname,
+            'category'   => $request->category=='all' ? 'ALL' : Category::find($request->category)->catname,
             'data'       => $output,
             'dateFrom'   => $request->from,
             'dateTo'     => $request->to,
