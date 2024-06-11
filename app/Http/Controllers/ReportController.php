@@ -171,6 +171,7 @@ class ReportController extends Controller
                     'dateRebateApplied'    => $value[0]->dateRebateApplied,
                     'seriescode'           => $value[0]->seriescode,
                     'clientname'           => $value[0]->clientname,
+                    'reference_2'          => $value[0]->reference_2,
                     'data'                 => $value
                 ];
 

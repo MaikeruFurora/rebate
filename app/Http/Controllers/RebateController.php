@@ -91,6 +91,7 @@ class RebateController extends Controller
         return  DB::select("select * from [dbo].[vw_approval] 
                     where [clientname] like '%{$request->search}%' or 
                           [reference] like '%{$request->search}%' or 
+                          [reference_2] like '%{$request->search}%' or 
                           [catname] like '%{$request->search}%' or 
                           [cardname] like '%{$request->search}%' or
                           [seriescode] like '%{$request->search}%'");

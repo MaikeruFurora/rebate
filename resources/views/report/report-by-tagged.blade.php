@@ -42,6 +42,9 @@
                 <th class="text-center" width="5%">POSTING DATE</th>
                 <th width="20%">CLIENT NAME</th>
                 <th width="20%">ITEM DESCRIPTION</th>
+                @if ($category=="LACKING FROM MIP")
+                <th width="20%">INVOICE</th>
+                @endif
                 <th width="10%">REBATE AMOUNT</th>
                 <th width="10%">REBATE`BAL</th>
             </tr>
@@ -65,7 +68,9 @@
                     {!!  ((!empty($dd))?$dd.'</br>':'') !!}
                 @endforeach
             </th>
-           
+            @if ($category=="LACKING FROM MIP")
+            <th width="20%">{{ $item['reference_2'] }}</th>
+            @endif
             <th width="10%">
                 {{ number_format($totalRebate,4) }}
             </th>
