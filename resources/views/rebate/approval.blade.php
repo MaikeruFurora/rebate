@@ -101,7 +101,7 @@
                             <tr style="font-size:11px">
                                 {{-- <td>&nbsp;</td> --}}
                                 <td>&nbsp;</td>
-                                <td width="15%">Category</td>
+                                <td width="10%">Category</td>
                                 <td>DocDate</td>
                                 {{-- <td>TotalAmount</td> --}}
                                 <td>Client Name</td>
@@ -109,6 +109,7 @@
                                 <td>RebateAmount</td>
                                 <td>Rebate Bal</td>
                                 <td>Reference</td>
+                                <td width="5%">Reference2</td>
                                 <td>Reason</td>
                                 <td>SeriesCode</td>
                                 <td>Action</td>

@@ -156,7 +156,7 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [ 1,2,3,4,5,6,7,8,9 ],
+                        columns: [ 1,2,3,4,5,6,7,9],
                        
                     }
                 },
@@ -166,7 +166,7 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
                     orientation: 'landscape',
                     pageSize: 'LEGAL',
                     exportOptions: {
-                        columns: [ 1,2,3,4,5,6,7,8,9 ],
+                        columns: [ 1,2,3,4,5,6,7,9 ],
                         
                     }
                 },
@@ -256,6 +256,10 @@ let fetchData = (status=null,category=null,clientname=null,start_date,end_date) 
                         return trimmedString;
                     }
                 },
+                {   
+                    orderable: false,
+                    data:"reference_2"
+               },
                 {   
                     orderable: false,
                     data:"reason",
