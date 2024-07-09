@@ -69,6 +69,7 @@ const tbl = (data) =>{
                 },
             {   data:"rebateBalance", },
             {     data:"reference", },
+            {     data:"reference_2", },
             {    data:"seriescode" },
            
         ]

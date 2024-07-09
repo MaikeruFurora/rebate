@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="searchData" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="searchDataLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header p-1">
           <h5 class="modal-title" id="searchDataLabel">Search Data</h5>
@@ -28,6 +28,7 @@
                             <td>RebateAmount</td>
                             <td>Rebate Bal</td>
                             <td>Reference</td>
+                            <td>Reference 2</td>
                             <td>SeriesCode</td>
                         </tr>
                     </thead>
