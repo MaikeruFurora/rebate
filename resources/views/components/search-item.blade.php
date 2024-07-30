@@ -9,16 +9,16 @@
           </button>
         </div>
         <div class="modal-body">
-            <div class="table-responsive">
-                <form action="{{ route('authenticate.approval.search') }}" id="searchForm" autocomplete="off">@csrf
-                    <div class="input-group border my-3">
-                        <input type="search" class="form-control" name="search" placeholder="Search" aria-label="" aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                          <button class="btn btn-secondary" type="submit" id="button-addon2">Search</button>
-                        </div>
-                    </div>
-                </form>
-                <table id="datatableSearchData" class="table table-bordered"  style="border-collapse: collapse; width: 100%;font-size:11px">
+          <form action="{{ route('authenticate.approval.search') }}" id="searchForm" autocomplete="off">@csrf
+            <div class="input-group border my-3">
+              <input type="search" class="form-control" name="search" placeholder="Search" aria-label="" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-secondary" type="submit" id="button-addon2">Search</button>
+              </div>
+            </div>
+          </form>
+          <div class="table-responsive">
+                <table id="datatableSearchData" class="table table-bordered dt-responsive nowrap"  style="border-collapse: collapse; width: 100%;font-size:11px">
                     <thead class="table-dark">
                         <tr style="font-size:11px">
                             <td width="15%">Category</td>
@@ -30,6 +30,7 @@
                             <td>Reference</td>
                             <td>Reference 2</td>
                             <td>SeriesCode</td>
+                            <td width="15%">Reason</td>
                         </tr>
                     </thead>
                 </table>

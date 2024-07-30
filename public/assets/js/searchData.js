@@ -71,6 +71,7 @@ const tbl = (data) =>{
             {     data:"reference", },
             {     data:"reference_2", },
             {    data:"seriescode" },
+            {    data:"reason" },
            
         ]
     })
