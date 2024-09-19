@@ -46,6 +46,7 @@
                 <th width="20%">INVOICE</th>
                 @endif
                 <th width="10%">REBATE AMOUNT</th>
+                <th width="10%">AMOUNT</th>
                 <th width="10%">REBATE`BAL</th>
             </tr>
         </thead>
@@ -75,8 +76,11 @@
                 {{ number_format($totalRebate,4) }}
             </th>
             <th width="10%">
-               {!! empty($rebateBalance)?'-':  number_format($rebateBalance,4).'&nbsp;&nbsp;<em class="text-danger">('.number_format($CreditSum,4).')</em>' !!}
+               {!! empty($rebateBalance)?'-':  number_format($CreditSum,4) !!}
             </th>
+            <th width="10%">
+                {!! empty($rebateBalance)?'-':  number_format($rebateBalance,4) !!}
+             </th>
            </tr>
            {{-- @endforeach --}}
         @endforeach
