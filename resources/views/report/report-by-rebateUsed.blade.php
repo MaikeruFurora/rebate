@@ -24,7 +24,7 @@
                     <td>{{ date("m-d-Y",strtotime($dateFrom)) }} / {{ date("m-d-Y",strtotime($dateTo)) }}</td>
                 </tr>
                 <tr>
-                    <th colspan="2">ALL CATEGORY BY REBATE <em>{{ $rebateType=='rebateUsed'?'USED':'UNUSED' }}</em></th>
+                    <th colspan="2">ALL CATEGORY BY REBATE <em>{{ $rebateType }}</em></th>
                 </tr>
             </table>
         </div>

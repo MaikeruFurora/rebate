@@ -106,7 +106,7 @@ class ReportController extends Controller
     }
 
     public function reportByRebateUsed($request){
-        
+         $rebateType = $request->type=='rebateUsed'?'USED':'UNUSED';
         return view('report.report-by-rebateUsed',[
             'categories'    => Header::select('catname','headers.category_id','categories.id')
             ->join('categories','headers.category_id','categories.id')
@@ -133,12 +133,14 @@ class ReportController extends Controller
                                     when status='O' THEN '1. OPEN'
                                     when status='C' THEN '3. CANCELLED'
                                     when status='R' THEN '4. REJECTED'
+                                     when status='X' THEN '5. CLOSED'
                                 end) as statusname 
                             from headers order by (case 
                             when status='A' THEN '2. APPROVED'
                             when status='O' THEN '1. OPEN'
                             when status='C' THEN '3. CANCELLED'
                             when status='R' THEN '4. REJECTED'
+                            when status='X' THEN '5. CLOSED'
                         end)  asc");
 
         return view('report.report-by-status',[
