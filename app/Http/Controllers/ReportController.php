@@ -116,7 +116,7 @@ class ReportController extends Controller
             'grandTotal'    => [],
             'grandTotalRU'  => [],
             'grandTotalRB'  => [],
-            'rebateType'    => $request->type,
+            'rebateType'    => $rebateType,
             'dateFrom'      => $request->from,
             'dateTo'        => $request->to,
         ]);
